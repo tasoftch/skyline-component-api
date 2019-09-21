@@ -26,7 +26,7 @@ use Skyline\Component\Config\AbstractComponent;
 use Skyline\Component\Config\CSSComponent;
 use Skyline\Component\Config\JavaScriptPostLoadComponent;
 
-$apiFileJS = __DIR__ . "/Components/js/skyline-api.js";
+$apiFileJS = __DIR__ . "/Components/js/skyline-api.js.php";
 $apiFileCSS = __DIR__ . "/Components/css/skyline.api.css";
 
 return [

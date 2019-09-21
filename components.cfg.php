@@ -38,7 +38,7 @@ return [
             CompilerContext::getCurrentCompiler()->getRelativeProjectPath($apiFileJS)
         ),
         "css" => new CSSComponent(
-            "/Public/js/skyline-api.js",
+            "/Public/css/skyline-api.css",
             'all',
             'sha384-'.hash_file("sha384", $apiFileCSS),
             NULL,

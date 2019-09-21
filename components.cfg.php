@@ -22,17 +22,25 @@
  */
 
 use Skyline\Compiler\CompilerContext;
+use Skyline\Component\Config\CSSComponent;
 use Skyline\Component\Config\JavaScriptPostLoadComponent;
 
-$apiFile = __DIR__ . "/Components/js/skyline-api.js";
+$apiFileJS = __DIR__ . "/Components/js/skyline-api.js";
+$apiFileCSS = __DIR__ . "/Components/css/skyline.api.css";
 
 return [
     "API" => [
         "js" => new JavaScriptPostLoadComponent(
             "/Public/js/skyline-api.js",
-            'sha384-'.hash_file("sha384", $apiFile),
+            'sha384-'.hash_file("sha384", $apiFileJS),
             NULL,
-            CompilerContext::getCurrentCompiler()->getRelativeProjectPath($apiFile)
-        )
+            CompilerContext::getCurrentCompiler()->getRelativeProjectPath($apiFileJS)
+        ),
+        "css" => new CSSComponent(
+            "/Public/js/skyline-api.js",
+            'all',
+            'sha384-'.hash_file("sha384", $apiFileCSS),
+            NULL,
+            CompilerContext::getCurrentCompiler()->getRelativeProjectPath($apiFileCSS))
     ]
 ];

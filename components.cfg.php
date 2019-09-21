@@ -22,6 +22,7 @@
  */
 
 use Skyline\Compiler\CompilerContext;
+use Skyline\Component\Config\AbstractComponent;
 use Skyline\Component\Config\CSSComponent;
 use Skyline\Component\Config\JavaScriptPostLoadComponent;
 
@@ -42,5 +43,8 @@ return [
             'sha384-'.hash_file("sha384", $apiFileCSS),
             NULL,
             CompilerContext::getCurrentCompiler()->getRelativeProjectPath($apiFileCSS))
+    ],
+    AbstractComponent::COMP_REQUIREMENTS => [
+        'jQuery'
     ]
 ];

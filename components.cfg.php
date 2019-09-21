@@ -42,9 +42,9 @@ return [
             'all',
             'sha384-'.hash_file("sha384", $apiFileCSS),
             NULL,
-            CompilerContext::getCurrentCompiler()->getRelativeProjectPath($apiFileCSS))
-    ],
-    AbstractComponent::COMP_REQUIREMENTS => [
-        'jQuery'
+            CompilerContext::getCurrentCompiler()->getRelativeProjectPath($apiFileCSS)),
+        AbstractComponent::COMP_REQUIREMENTS => [
+            'jQuery'
+        ]
     ]
 ];

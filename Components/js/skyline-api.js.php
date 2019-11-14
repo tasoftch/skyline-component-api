@@ -1,5 +1,5 @@
 <?php
-use TASoft\Service\ServiceManager;
+use Skyline\Kernel\Service\CORSService;
 ?>
 /*
  * BSD 3-Clause License
@@ -39,7 +39,7 @@ if(jQuery !== undefined) {
             window.Skyline = {};
 
         window.Skyline.API = {
-            HOST_PREFIX : "<?=ServiceManager::generalServiceManager()->getParameter("api.host")?>",
+            HOST_PREFIX : "<?= CORSService::getHostByLabel("API") ?>",
             get:function(apiTarget) {
                 var xhr = this.setup.xml();
                 var req = new this.Request(xhr, this.setup);
@@ -231,7 +231,7 @@ if(jQuery !== undefined) {
                 this.doneCallbacks[e].call(this);
             }
 
-            for(var e=0;e<this.buttons.length;e++) {
+            for(e=0;e<this.buttons.length;e++) {
                 var btn = this.buttons[e];
                 if(btn.api)
                     btn.api("stop");

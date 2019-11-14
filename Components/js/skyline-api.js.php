@@ -47,7 +47,7 @@ if(jQuery !== undefined) {
                 var xhr = this.setup.xml();
                 var req = new this.Request(xhr, this.setup);
 
-                xhr.open("GET", this.HOST_PREFIX + apiTarget);
+                xhr.open("GET", this.target(apiTarget));
 
                 window.setTimeout(function() {
                     req.beforeHandler();
@@ -60,7 +60,7 @@ if(jQuery !== undefined) {
                 var xhr = this.setup.xml();
                 var req = new this.Request(xhr, this.setup);
 
-                xhr.open("POST", this.HOST_PREFIX + apiTarget);
+                xhr.open("POST", this.target(apiTarget));
 
                 window.setTimeout(function() {
                     req.beforeHandler();
@@ -75,6 +75,12 @@ if(jQuery !== undefined) {
 
                 return req;
             },
+            target: function(target) {
+                if(/^https?/i.test(target))
+                    return target;
+                return this.HOST_PREFIX + apiTarget
+            }
+            ,
             setup : {
                 xml:function() {
                     if (window.XMLHttpRequest) {

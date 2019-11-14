@@ -1,4 +1,5 @@
 <?php
+use Skyline\Kernel\Loader\RequestLoader;
 use Skyline\Kernel\Service\CORSService;
 ?>
 /*
@@ -39,7 +40,9 @@ if(jQuery !== undefined) {
             window.Skyline = {};
 
         window.Skyline.API = {
-            HOST_PREFIX : "<?= CORSService::getHostByLabel("API") ?>",
+            HOST_PREFIX : "<?php
+                echo CORSService::getHostAndSchemeByLabel("API", RequestLoader::$request);
+                ?>",
             get:function(apiTarget) {
                 var xhr = this.setup.xml();
                 var req = new this.Request(xhr, this.setup);

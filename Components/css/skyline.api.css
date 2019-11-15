@@ -91,3 +91,91 @@
         transform: translateX(46px);
     }
 }
+
+
+.banner .modal-dialog.success .modal-header {
+    background-color: #00c851;
+    color: #fff;
+}
+
+.banner .modal-dialog.success .fa {
+    color: #00c851;
+}
+
+.banner .modal-dialog.error .modal-header {
+    background-color: #ff3547;
+    color: #fff;
+}
+.banner .modal-dialog.error .fa {
+    color: #ff3547;
+}
+
+.banner .modal-dialog.warning .modal-header {
+    background-color: #fb3;
+    color: #fff;
+}
+.banner .modal-dialog.warning .fa {
+    color: #fb3;
+}
+
+.banner .modal-dialog.info .modal-header {
+    background-color: #33b5e5;
+    color: #fff;
+}
+.banner .modal-dialog.info .fa {
+    color: #33b5e5;
+}
+
+
+
+.white-text {
+    color: #fff;
+}
+
+@-webkit-keyframes rotateIn {
+    from {
+        -webkit-transform-origin: center;
+        transform-origin: center;
+        -webkit-transform: rotate3d(0, 0, 1, -200deg);
+        transform: rotate3d(0, 0, 1, -200deg);
+        opacity: 0
+    }
+
+    to {
+        -webkit-transform-origin: center;
+        transform-origin: center;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+        opacity: 1
+    }
+}
+
+@keyframes rotateIn {
+    from {
+        -webkit-transform-origin: center;
+        transform-origin: center;
+        -webkit-transform: rotate3d(0, 0, 1, -200deg);
+        transform: rotate3d(0, 0, 1, -200deg);
+        opacity: 0
+    }
+
+    to {
+        -webkit-transform-origin: center;
+        transform-origin: center;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+        opacity: 1
+    }
+}
+
+.rotateIn {
+    -webkit-animation-name: rotateIn;
+    animation-name: rotateIn
+}
+
+.animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both
+}

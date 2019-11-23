@@ -78,7 +78,7 @@ if(jQuery !== undefined) {
             target: function(target) {
                 if(/^https?/i.test(target))
                     return target;
-                return this.HOST_PREFIX + apiTarget
+                return this.HOST_PREFIX + target
             }
             ,
             setup : {

@@ -47,7 +47,7 @@ if(jQuery !== undefined) {
                 var xhr = this.setup.xml();
                 var req = new this.Request(xhr, this.setup);
 
-                xhr.open("GET", this.target(apiTarget));
+                xhr.open("GET", xhr.apiTarget = this.target(apiTarget));
 
                 window.setTimeout(function() {
                     req.beforeHandler();
@@ -60,7 +60,8 @@ if(jQuery !== undefined) {
                 var xhr = this.setup.xml();
                 var req = new this.Request(xhr, this.setup);
 
-                xhr.open("POST", this.target(apiTarget));
+                xhr.open("POST", xhr.apiTarget = this.target(apiTarget));
+                xhr.apiFormData = formData;
 
                 window.setTimeout(function() {
                     req.beforeHandler();
@@ -100,7 +101,8 @@ if(jQuery !== undefined) {
                         }
                     }
                 },
-                withCredentials : true
+                withCredentials : true,
+                loginView: undefined
             },
             Request: function(xhr, setup) {
                 var key;
@@ -174,7 +176,15 @@ if(jQuery !== undefined) {
                                     }
                                 }
                             }
-                            failedHandler(data.errors[0]);
+
+                            if(data.errors[0] && data.errors[0].code == 401) {
+                                if(xhr.loginView) {
+                                    that.authenticationHandler(data.errors[0], xhr.apiTarget, xhr.apiFormData);
+                                } else
+                                    failedHandler(data.errors[0]);
+                            } else {
+                                failedHandler(data.errors[0]);
+                            }
                         } else {
                             for(var e=0;e<that.successCallbacks.length;e++) {
                                 that.successCallbacks[e].call(that, data);
@@ -246,6 +256,12 @@ if(jQuery !== undefined) {
                     btn.api("stop");
             }
         }
+        window.Skyline.API.Request.prototype.authenticationHandler = function(error, apiTarget, formData) {
+            console.log(error);
+            console.log(apiTarget);
+            console.log(formData);
+        }
+
         $.fn.api = function(cmd) {
             if(cmd == 'start') {
                 this.addClass("api-loading");

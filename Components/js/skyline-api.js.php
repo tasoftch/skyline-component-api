@@ -161,6 +161,7 @@ if(jQuery !== undefined) {
 
                 xhr.addEventListener("load", function() {
                     that.responseHandler(xhr, that, failedHandler);
+                    request.afterHandler();
                 });
                 xhr.addEventListener("error", function(evt) {
                     failedHandler(evt);
@@ -248,8 +249,6 @@ if(jQuery !== undefined) {
             } catch(err) {
                 failedHandler(err);
             }
-
-            request.afterHandler();
         }
 
         $.fn.api = function(cmd) {

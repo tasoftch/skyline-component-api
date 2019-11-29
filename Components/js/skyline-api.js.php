@@ -60,6 +60,15 @@ if(jQuery !== undefined) {
                 var xhr = this.setup.xml();
                 var req = new this.Request(xhr, this.setup);
 
+                if(!(formData instanceof FormData)) {
+                    var k;
+                    var fd = new FormData();
+                    for(k in formData) {
+                        fd.append(k, formData[k]);
+                    }
+                    formData = fd;
+                }
+
                 xhr.open("POST", xhr.apiTarget = this.target(apiTarget));
                 xhr.apiFormData = formData;
 
@@ -151,50 +160,7 @@ if(jQuery !== undefined) {
                 };
 
                 xhr.addEventListener("load", function() {
-                    try {
-                        var data = JSON.parse(xhr.responseText);
-                        if(data.api_modal_response) {
-                            $(document.body).append( data.api_modal_response );
-                            if(data.api_modal_response_stop) {
-                                that.afterHandler();
-                                return;
-                            }
-                        }
-
-                        if(!data.success) {
-                            if(data.api_validation_name) {
-                                var el = document.getElementById(data.api_validation_name);
-                                if(el) {
-                                    if(data.api_modal_response_id) {
-                                        $('#'+data.api_modal_response_id).on("hidden.bs.modal", function() {
-                                            el.focus();
-                                        });
-                                        that.afterHandler();
-                                        return;
-                                    } else {
-                                        el.focus();
-                                    }
-                                }
-                            }
-
-                            if(data.errors[0] && data.errors[0].code == 401) {
-                                if(xhr.loginView) {
-                                    that.authenticationHandler(data.errors[0], xhr.apiTarget, xhr.apiFormData);
-                                } else
-                                    failedHandler(data.errors[0]);
-                            } else {
-                                failedHandler(data.errors[0]);
-                            }
-                        } else {
-                            for(var e=0;e<that.successCallbacks.length;e++) {
-                                that.successCallbacks[e].call(that, data);
-                            }
-                        }
-                    } catch(err) {
-                        failedHandler(err);
-                    }
-
-                    that.afterHandler();
+                    that.responseHandler(xhr, that, failedHandler);
                 });
                 xhr.addEventListener("error", function(evt) {
                     failedHandler(evt);
@@ -260,6 +226,30 @@ if(jQuery !== undefined) {
             console.log(error);
             console.log(apiTarget);
             console.log(formData);
+        }
+        window.Skyline.API.Request.prototype.responseHandler = function(xhr, request, failedHandler) {
+            try {
+                var data = JSON.parse(xhr.responseText);
+
+                if(!data.success) {
+                    if(data.errors[0] && data.errors[0].code == 401) {
+                        if(xhr.loginView) {
+                            request.authenticationHandler(data.errors[0], xhr.apiTarget, xhr.apiFormData);
+                        } else
+                            failedHandler(data.errors[0]);
+                    } else {
+                        failedHandler(data.errors[0]);
+                    }
+                } else {
+                    for(var e=0;e<request.successCallbacks.length;e++) {
+                        request.successCallbacks[e].call(request, data);
+                    }
+                }
+            } catch(err) {
+                failedHandler(err);
+            }
+
+            request.afterHandler();
         }
 
         $.fn.api = function(cmd) {

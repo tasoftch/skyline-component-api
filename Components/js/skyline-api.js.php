@@ -161,7 +161,7 @@ if(jQuery !== undefined) {
 
                 xhr.addEventListener("load", function() {
                     that.responseHandler(xhr, that, failedHandler);
-                    request.afterHandler();
+                    that.afterHandler();
                 });
                 xhr.addEventListener("error", function(evt) {
                     failedHandler(evt);

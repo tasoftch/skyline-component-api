@@ -160,7 +160,12 @@ if(jQuery !== undefined) {
                 };
 
                 xhr.addEventListener("load", function() {
-                    that.responseHandler(xhr, that, failedHandler);
+                    var d;
+                    if(d = that.responseHandler(xhr, that, failedHandler)) {
+                        for(var e=0;e<that.successCallbacks.length;e++) {
+                            that.successCallbacks[e].call(that, d);
+                        }
+                    }
                     that.afterHandler();
                 });
                 xhr.addEventListener("error", function(evt) {
@@ -236,19 +241,19 @@ if(jQuery !== undefined) {
                     if(data.errors[0] && data.errors[0].code == 401) {
                         if(xhr.loginView) {
                             request.authenticationHandler(data.errors[0], xhr.apiTarget, xhr.apiFormData);
-                        } else
-                            failedHandler(data.errors[0]);
-                    } else {
-                        failedHandler(data.errors[0]);
+                            return false;
+                        }
                     }
+
+                    failedHandler(data.errors[0]);
                 } else {
-                    for(var e=0;e<request.successCallbacks.length;e++) {
-                        request.successCallbacks[e].call(request, data);
-                    }
+                    return data;
                 }
             } catch(err) {
                 failedHandler(err);
             }
+
+            return false;
         }
 
         $.fn.api = function(cmd) {

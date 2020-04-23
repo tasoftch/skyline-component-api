@@ -1,6 +1,5 @@
 {
   "name": "skyline/component-api",
-  "minimum-stability": "dev",
   "license": "MIT",
   "authors": [
     {
@@ -9,7 +8,7 @@
     }
   ],
   "require": {
-    "skyline/direct-components": "dev-master"
+    "skyline/direct-components": "^0.8"
   },
   "require-dev": {
     "skyline/compiler": "dev-master"

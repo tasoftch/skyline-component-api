@@ -1,0 +1,24 @@
+{
+  "name": "skyline-api",
+  "version": "0.8.26",
+  "description": "A description",
+  "scripts": {
+    "v:patch": "npm version --no-git-tag-version patch",
+    "build": "npm run v:patch && npm run build:css && webpack --env.production",
+    "build:js": "webpack --env.development",
+    "build:css": "node-sass --output-style compressed --precision 6 style/main.scss Components/css/skyline-api.min.css"
+  },
+  "keywords": [],
+  "author": "Thomas Abplanalp",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "node-sass": "^4.8.3",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12"
+  }
+}

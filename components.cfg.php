@@ -21,30 +21,39 @@
  * SOFTWARE.
  */
 
-use Skyline\Compiler\CompilerContext;
 use Skyline\Component\Config\AbstractComponent;
 use Skyline\Component\Config\CSSComponent;
 use Skyline\Component\Config\JavaScriptPostLoadComponent;
 
-$apiFileJS = __DIR__ . "/Components/js/skyline-api.js.php";
-$apiFileCSS = __DIR__ . "/Components/css/skyline.api.css";
+$apiFileJS = __DIR__ . "/Components/js/skyline-api.min.js";
+$apiFileCSS = __DIR__ . "/Components/css/skyline-api.min.css";
+$apiFileJS_L = __DIR__ . "/Components/js/skyline-api.js.php";
 
 return [
     "API" => [
         "js" => new JavaScriptPostLoadComponent(
-            "/Public/js/skyline-api.js",
-            'sha384-'.hash_file("sha384", $apiFileJS),
-            NULL,
-            CompilerContext::getCurrentCompiler()->getRelativeProjectPath($apiFileJS)
+        	...AbstractComponent::makeLocalFileComponentArguments(
+        		"/Public/Skyline/skyline-api.min.js",
+				$apiFileJS
+			)
         ),
+		'js-loader' => new JavaScriptPostLoadComponent(
+			...AbstractComponent::makeLocalFileComponentArguments(
+				"/Public/Skyline/skyline-api-loader.min.js",
+				$apiFileJS_L,
+					NULL,
+					NULL
+			)
+		),
         "css" => new CSSComponent(
-            "/Public/css/skyline-api.css",
-            'all',
-            'sha384-'.hash_file("sha384", $apiFileCSS),
-            NULL,
-            CompilerContext::getCurrentCompiler()->getRelativeProjectPath($apiFileCSS)),
+        	...AbstractComponent::makeLocalFileComponentArguments(
+			"/Public/Skyline/skyline-api.min.css",
+			$apiFileCSS,
+			'sha384',
+			NULL
+		)),
         AbstractComponent::COMP_REQUIREMENTS => [
-            'jQuery'
+            'Skyline'
         ]
     ]
 ];

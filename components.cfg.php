@@ -50,7 +50,8 @@ return [
 			"/Public/Skyline/skyline-api.min.css",
 			$apiFileCSS,
 			'sha384',
-			NULL
+			NULL,
+				"all"
 		)),
         AbstractComponent::COMP_REQUIREMENTS => [
             'Skyline'

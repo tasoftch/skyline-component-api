@@ -1,6 +1,8 @@
 <?php
 use Skyline\Kernel\Loader\RequestLoader;
 use Skyline\Kernel\Service\CORSService;
+use Skyline\Security\CSRF\CSRFTokenManager;
+use TASoft\Service\ServiceManager;
 ?>
 /*
  * BSD 3-Clause License
@@ -38,5 +40,12 @@ use Skyline\Kernel\Service\CORSService;
 (function(API) {
     if(API) {
         API.HOST_PREFIX = "<?= CORSService::getHostAndSchemeByLabel("API", RequestLoader::$request)?>";
+        API.CSRF_TOKEN = "<?php
+			$csrf = ServiceManager::generalServiceManager()->get("CSRFManager");
+			$tn = ServiceManager::generalServiceManager()->getParameter("api.js.csrf-token-name");
+			if($csrf instanceof CSRFTokenManager) {
+				echo $csrf->getToken($tn);
+			}
+			?>";
     }
 })(window.Skyline.API);

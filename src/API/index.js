@@ -54,6 +54,10 @@ export default {
             formData = fd;
         }
 
+        if(this.CSRF_TOKEN_NAME && this.CSRF_TOKEN)
+            formData.append(this.CSRF_TOKEN_NAME, this.CSRF_TOKEN);
+
+
         let xhr = this.setup.xhr();
         if(!xhr) {
             throw new Error("Could not create api call. No XHR instance could be creted.");

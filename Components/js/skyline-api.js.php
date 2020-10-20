@@ -47,5 +47,6 @@ use TASoft\Service\ServiceManager;
 				echo $csrf->getToken($tn);
 			}
 			?>";
+        API.CSRF_TOKEN_NAME = "<?=$tn?>";
     }
 })(window.Skyline.API);

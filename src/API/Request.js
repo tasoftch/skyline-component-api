@@ -81,9 +81,8 @@ export default class Request {
             for(let n in this.responseHandlers) {
                 if(n === 'default' || ct.substr(0, n.length).toLowerCase() === n.toLowerCase()) {
                     let handler = this.responseHandlers[n];
-                    let d;
-                    if(typeof handler === 'function' && (d = handler.call(this, this._xhr))) {
-                        this._trigger(this._successCallbacks, d);
+                    if(typeof handler === 'function') {
+                        this._trigger(this._successCallbacks, handler.call(this, this._xhr));
                         break;
                     }
                     throw new Error("Could not parse response.");

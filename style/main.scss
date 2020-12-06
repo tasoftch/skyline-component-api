@@ -1,5 +1,6 @@
 .api-loading {
   position: relative;
+  overflow: hidden;
 }
 
 
@@ -13,11 +14,11 @@
   content: "";
   -webkit-animation-duration: .6s;
   -webkit-animation-timing-function: linear;
-  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-iteration-count: 10000000;
 
   animation-duration: .6s;
   animation-timing-function: linear;
-  animation-iteration-count: infinite;
+  animation-iteration-count: 10000000;
 
   background: -webkit-repeating-linear-gradient(
                   145deg,

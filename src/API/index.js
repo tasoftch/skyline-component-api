@@ -66,7 +66,7 @@ export default {
         var req = new Request(xhr, this.setup, tg = this.makeTarget(apiTarget));
 
         xhr.open("POST", tg);
-        xhr.send(formData);
+        req.send(formData);
 
         return req;
     }

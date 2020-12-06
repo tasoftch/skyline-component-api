@@ -2,5 +2,5 @@
 export default (() => {
     if(window.jQuery)
         return window.jQuery;
-    return null;
+    throw new Error("Skyline component API requires jQuery");
 })()

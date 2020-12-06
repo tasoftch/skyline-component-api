@@ -108,8 +108,8 @@ export default class Request {
     }
 
     afterHandler() {
-        this._trigger(this._doneCallbacks);
         _buttonHandler(this._buttons, 'stop');
+        this._trigger(this._doneCallbacks);
     }
 
     send(data) {
@@ -123,17 +123,17 @@ export default class Request {
                 else
                     this._xhr.send();
             } catch (error) {
-                this._trigger(this._failCallbacks, error);
                 this.afterHandler();
+                this._trigger(this._failCallbacks, error);
             }
         }, 1);
     }
 
     button(btn) {
         if(typeof btn == "string" && $)
-            btn = $(idOrBtn);
-        if(idOrBtn)
-            this.buttons.push(btn);
+            btn = $(btn);
+        if(btn)
+            this._buttons.push(btn);
         return this;
     }
 

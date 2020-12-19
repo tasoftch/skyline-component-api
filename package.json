@@ -1,6 +1,6 @@
 {
   "name": "skyline-api",
-  "version": "0.8.41",
+  "version": "0.8.42",
   "description": "A description",
   "scripts": {
     "v:patch": "npm version --no-git-tag-version patch",

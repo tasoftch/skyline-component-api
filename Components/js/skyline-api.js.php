@@ -43,7 +43,7 @@ use TASoft\Service\ServiceManager;
         API.CSRF_TOKEN = "<?php
 			$csrf = ServiceManager::generalServiceManager()->get("CSRFManager");
 			$tn = ServiceManager::generalServiceManager()->getParameter("api.js.csrf-token-name");
-			if($csrf instanceof CSRFTokenManager) {
+			if($tn && $csrf instanceof CSRFTokenManager) {
 				echo $csrf->getToken($tn);
 			}
 			?>";

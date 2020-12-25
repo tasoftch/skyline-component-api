@@ -10,27 +10,44 @@ let _buttonHandler = (btn, cmd) => {
     }
 }
 
-let _defaultSettings = {
+export const _defaultSettings = {
+    xhr:function() {
+        if (window.XMLHttpRequest) {
+            // Chrome, Firefox, IE7+, Opera, Safari
+            return new XMLHttpRequest();
+        }
+        // IE6
+        try {
+            return new ActiveXObject('MSXML2.XMLHTTP.6.0');
+        } catch (e) {
+            try {
+                // The fallback.
+                return new ActiveXObject('MSXML2.XMLHTTP.3.0');
+            } catch (e) {
+                console.error('This browser is not AJAX enabled.');
+                return null;
+            }
+        }
+    },
     withCredentials : true,
     authenticationHandler: undefined
 }
 
-let _defaultResponseHandlers = {
+export const _defaultResponseHandlers = {
     'application/json': (xhr) => {
-        var data = JSON.parse(xhr.responseText);
+        let data = JSON.parse(xhr.responseText);
 
         if(!data.success) {
-            if(data.errors[0] && data.errors[0].code === 401) {
-                if(this.settings.authenticationHandler) {
-                    this.settings.authenticationHandler.call(this, data.errors[0]);
-                    return false;
-                }
-            }
-
             throw data.errors[0];
         } else {
             return data;
         }
+    },
+    'text/html': (xhr) => {
+        return $(xhr.responseText);
+    },
+    'application/octet-stream': (xhr) => {
+        return new Blob(xhr.response);
     },
     'default' : (xhr) => {
         return xhr.responseText;
@@ -40,8 +57,8 @@ let _defaultResponseHandlers = {
 
 export default class Request {
 
-    constructor(xhr, setup, target) {
-        this._settings = Object.assign({}, _defaultSettings, setup);
+    constructor(xhr, target) {
+        this._settings = Object.assign({}, _defaultSettings);
         this._xhr = xhr;
         xhr.withCredentials = this._settings.withCredentials ? true : false;
         this._target = target;
@@ -76,6 +93,43 @@ export default class Request {
 
     _load() {
         let ct = this._xhr.getResponseHeader('content-type');
+
+        if(this._xhr.status === 401 && typeof this._settings.authenticationHandler === 'function') {
+            this._settings.authenticationHandler({
+                target: this.this._target,
+                formData: this._data,
+                cancel: (error) => {
+                    this._trigger(this._failCallbacks, error);
+                    this.afterHandler();
+                },
+                retry: (target, formData) => {
+                    const xhr = this._settings.xhr();
+                    if(!xhr) {
+                        throw new Error("Could not create api call. No XHR instance could be created.");
+                    }
+
+                    const req = new Request(xhr, target&&target.length ?target: this._target);
+
+                    req._successCallbacks = this._successCallbacks;
+                    req._failCallbacks = this._failCallbacks;
+                    req._uploadCallbacks = this._uploadCallbacks;
+                    req._downloadCallbacks = this._downloadCallbacks;
+                    req._doneCallbacks = this._doneCallbacks;
+                    req._buttons = this._buttons;
+                    req.responseHandlers = this.responseHandlers;
+
+                    if(this._m === 'P') {
+                        xhr.open("POST", req._target);
+                        req.send(formData ? formData : this._data);
+                    } else {
+                        xhr.open("GET", req._target);
+                        req.send();
+                    }
+                    return req;
+                }
+            });
+            return;
+        }
 
         try {
             for(let n in this.responseHandlers) {

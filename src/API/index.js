@@ -1,31 +1,11 @@
 
-import Request from "./Request";
+import Request, {_defaultResponseHandlers, _defaultSettings} from "./Request";
 
 
 
 export default {
-    setup : {
-        xhr:function() {
-            if (window.XMLHttpRequest) {
-                // Chrome, Firefox, IE7+, Opera, Safari
-                return new XMLHttpRequest();
-            }
-            // IE6
-            try {
-                return new ActiveXObject('MSXML2.XMLHTTP.6.0');
-            } catch (e) {
-                try {
-                    // The fallback.
-                    return new ActiveXObject('MSXML2.XMLHTTP.3.0');
-                } catch (e) {
-                    console.error('This browser is not AJAX enabled.');
-                    return null;
-                }
-            }
-        },
-        withCredentials : true,
-        authenticationHandler: undefined
-    },
+    responseHandlers: _defaultResponseHandlers,
+    setup : _defaultSettings,
 
     makeTarget: function(target) {
         if(/^https?/i.test(target))
@@ -38,7 +18,8 @@ export default {
             throw new Error("Could not create api call. No XHR instance could be creted.");
         }
         let tg;
-        var req = new Request(xhr, this.setup, tg = this.makeTarget(apiTarget));
+        var req = new Request(xhr, tg = this.makeTarget(apiTarget));
+        req._m = 'G';
 
         xhr.open("GET", tg);
         req.send();
@@ -63,7 +44,8 @@ export default {
             throw new Error("Could not create api call. No XHR instance could be creted.");
         }
         let tg;
-        var req = new Request(xhr, this.setup, tg = this.makeTarget(apiTarget));
+        var req = new Request(xhr, tg = this.makeTarget(apiTarget));
+        req._m = 'P';
 
         xhr.open("POST", tg);
         req.send(formData);

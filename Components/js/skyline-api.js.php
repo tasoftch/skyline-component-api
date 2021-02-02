@@ -41,11 +41,13 @@ use TASoft\Service\ServiceManager;
     if(API) {
         API.HOST_PREFIX = "<?= CORSService::getHostAndSchemeByLabel("API", RequestLoader::$request)?>";
         API.CSRF_TOKEN = "<?php
-			$csrf = ServiceManager::generalServiceManager()->get("CSRFManager");
-			$tn = ServiceManager::generalServiceManager()->getParameter("api.js.csrf-token-name");
-			if($tn && $csrf instanceof CSRFTokenManager) {
-				echo $csrf->getToken($tn);
-			}
+            if(ServiceManager::generalServiceManager()->serviceExists("CSRFManager")) {
+				$csrf = ServiceManager::generalServiceManager()->get("CSRFManager");
+				$tn = ServiceManager::generalServiceManager()->getParameter("api.js.csrf-token-name");
+				if($tn && $csrf instanceof CSRFTokenManager) {
+					echo $csrf->getToken($tn);
+				}
+            }
 			?>";
         API.CSRF_TOKEN_NAME = "<?=$tn?>";
     }

@@ -9,11 +9,11 @@
   ],
   "require": {
     "php": ">=7.2",
-    "skyline/direct-components": "^0.8",
-    "skyline/component-skyline": "^0.8"
+    "skyline/direct-components": "^0.8|^8",
+    "skyline/component-skyline": "^0.8|^8"
   },
   "require-dev": {
-    "skyline/compiler": "dev-master",
-    "skyline/cms-security": "^0.8"
+    "skyline/compiler": "^8",
+    "skyline/cms-security": "^8"
   }
 }

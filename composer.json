@@ -13,7 +13,7 @@
     "skyline/component-skyline": "^0.8|^8"
   },
   "require-dev": {
-    "skyline/compiler": "^8",
-    "skyline/cms-security": "^8"
+    "skyline/compiler": "^8|^0.8",
+    "skyline/cms-security": "^8|^0.8"
   }
 }

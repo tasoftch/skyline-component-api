@@ -60,7 +60,7 @@ export default class Request {
     constructor(xhr, target) {
         this._settings = Object.assign({}, _defaultSettings);
         this._xhr = xhr;
-        xhr.withCredentials = this._settings.withCredentials ? true : false;
+        xhr.withCredentials = this._settings.withCredentials;
         this._target = target;
         this._successCallbacks = [];
         this._failCallbacks = [];
@@ -68,6 +68,7 @@ export default class Request {
         this._downloadCallbacks = [];
         this._doneCallbacks = [];
         this._buttons = [];
+        this._authCallback = this._settings.authenticationHandler;
         this._setupEventHandlers(xhr);
         this.responseHandlers = _defaultResponseHandlers;
         this._data = false;
@@ -94,9 +95,9 @@ export default class Request {
     _load() {
         let ct = this._xhr.getResponseHeader('content-type');
 
-        if(this._xhr.status === 401 && typeof this._settings.authenticationHandler === 'function') {
-            this._settings.authenticationHandler({
-                target: this.this._target,
+        if(this._xhr.status === 401 && typeof this._authCallback === 'function') {
+            this._authCallback({
+                target: this._target,
                 formData: this._data,
                 cancel: (error) => {
                     this._trigger(this._failCallbacks, error);
@@ -220,6 +221,10 @@ export default class Request {
         if(callback && typeof callback === 'function')
             this._doneCallbacks.push(callback);
         return this;
+    }
+
+    authenticator(callback) {
+        this._authCallback = callback;
     }
 
     get target() {

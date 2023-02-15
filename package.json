@@ -1,6 +1,6 @@
 {
   "name": "skyline-api",
-  "version": "0.8.43",
+  "version": "0.8.44",
   "description": "A description",
   "scripts": {
     "v:patch": "npm version --no-git-tag-version patch",
@@ -17,8 +17,8 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "node-sass": "^4.8.3",
-    "webpack": "^4.44.2",
+    "node-sass": "^8.0.0",
+    "webpack": "^5.75.0",
     "webpack-cli": "^3.3.12"
   }
 }

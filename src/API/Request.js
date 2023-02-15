@@ -92,10 +92,8 @@ export default class Request {
         this._trigger(handlers, percent, position, total, event.lengthComputable);
     }
 
-    _load() {
-        let ct = this._xhr.getResponseHeader('content-type');
-
-        if(this._xhr.status === 401 && typeof this._authCallback === 'function') {
+    _auth() {
+        if(typeof this._authCallback === 'function') {
             this._authCallback({
                 target: this._target,
                 formData: this._data,
@@ -129,7 +127,19 @@ export default class Request {
                     return req;
                 }
             });
-            return;
+            return true;
+        }
+        return false;
+    }
+
+    _load() {
+        let ct = this._xhr.getResponseHeader('content-type');
+
+
+
+        if(this._xhr.status === 401 && typeof this._authCallback === 'function') {
+            if(this._auth())
+                return;
         }
 
         try {
@@ -144,6 +154,10 @@ export default class Request {
                 }
             }
         } catch (err) {
+            if(typeof err.code !== 'undefined' && err.code === 401) {
+                if(this._auth())
+                    return;
+            }
             this._trigger(this._failCallbacks, err);
         }
 

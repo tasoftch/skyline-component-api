@@ -44,7 +44,12 @@ export const _defaultResponseHandlers = {
         }
     },
     'text/html': (xhr) => {
-        return $(xhr.responseText);
+        let html = xhr.responseText;
+        if(html.substring(0, 18) === '## SKY_AUTOLOAD ##') {
+            html = html.substring(18);
+            $(document.body).append($(html));
+        }
+        return html;
     },
     'application/octet-stream': (xhr) => {
         return new Blob(xhr.response);
